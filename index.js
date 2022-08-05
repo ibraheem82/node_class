@@ -6,7 +6,7 @@ const server = http.createServer((req, res) => {
   // console.log(req.url);
   //   if (req.url === '/') {
   //     fs.readFile(
-  //       path.join(__dirname, '../public', 'index.html'),
+  //       path.join(__dirname, '/public', 'index.html'),
   //       (err, content) => {
   // * Checking for the error
   //         if (err) throw err;
@@ -18,7 +18,7 @@ const server = http.createServer((req, res) => {
 
   //   if (req.url === '/about') {
   //     fs.readFile(
-  //       path.join(__dirname, '../public', 'about.html'),
+  //       path.join(__dirname, '/public', 'about.html'),
   //       (err, content) => {
   // * Checking for the error
   //         if (err) throw err;
@@ -43,7 +43,7 @@ const server = http.createServer((req, res) => {
   // * Build file path
   let filePath = path.join(
     __dirname,
-    "../public",
+    "public",
     req.url === "/" ? "index.html" : req.url
   );
 
@@ -68,7 +68,7 @@ const server = http.createServer((req, res) => {
       contentType = "text/css";
       break;
 
-    case "json":
+    case ".json":
       contentType = "application/json";
       break;
 
@@ -79,32 +79,31 @@ const server = http.createServer((req, res) => {
     case ".jpg":
       contentType = "image/jpg";
       break;
-
   }
 
-
-// * Read File
-fs.readFile(filePath, (err, content) => {
-    if(err) {
-        if (err.code == 'ENOENT'){
-            // * Page not found
-            fs.readFile(path.join(__dirname, '../public', '404.html'), (err, content) => {
-          res.writeHead(200, { 'Content-Type': 'text/html' });
-          res.end(content, 'utf8');
-
-            })
-        } else {
-            // * Show some server error
-            res.writeHead(500);
-            res.end(`Server Error: ${err.code}`);
-        }
+  // * Read File
+  fs.readFile(filePath, (err, content) => {
+    if (err) {
+      if (err.code == "ENOENT") {
+        // * Page not found
+        fs.readFile(
+          path.join(__dirname, "public", "404.html"),
+          (err, content) => {
+            res.writeHead(200, { "Content-Type": "text/html" });
+            res.end(content, "utf8");
+          }
+        );
+      } else {
+        // * Show some server error
+        res.writeHead(500);
+        res.end(`Server Error: ${err.code}`);
+      }
     } else {
-        // * Success response
-          res.writeHead(200, { 'Content-Type': contentType });
-          res.end(content, 'utf8');
-
+      // * Success response
+      res.writeHead(200, { "Content-Type": contentType });
+      res.end(content, "utf8");
     }
-});
+  });
 });
 
 // ! when you it deploy it, it is not always going to run on port [9000], it is going to to run on whatever our host is going to decide for which is going to be in environment variable.
@@ -121,7 +120,6 @@ server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 // person1.greeting();
 
 // console.log(person.name);
-
 
 // const Logger = require('./logger.js');
 // const logger =  new Logger();
